@@ -1,0 +1,129 @@
+<html><head>
+
+<meta name="viewport" content="width=480">
+
+<style>
+input {border-style: none; border-bottom-style: solid; border-width:thin;}
+
+div {border:solid thin black; margin: 0.5em; padding: 0.5em; border-radius: 1em; background: #f7f7f7;}
+
+.die {border:solid thin black; margin: 1px; padding: 1px; border-radius: 5px; display: inline-block;}
+
+.outer {margin: auto; max-width: 800px; background: khaki;}
+
+@viewport { width: 640;}
+
+</style>
+
+
+<script>
+
+  var cardFace = {
+    26:'<svg width="50" height="50"><polygon points="10,3 40,3 40,47, 10,47" style="stroke: black; fill: none" /><text fill="black" x="20" y="26" font-family="Verdana" font-size="14">REPLACEME</text></svg>',
+    24:'<svg width="50" height="50"><polygon points="10,3 40,3 40,47, 10,47" style="stroke: black; fill: none" /><text fill="black" x="20" y="30" font-family="Verdana" font-size="14">REPLACEME</text></svg>',
+    'card':'<svg width="50" height="50"><polygon points="10,3 40,3 40,47, 10,47" style="stroke: black; fill: none" /><text fill="black" x="20" y="30" font-family="Verdana" font-size="18">REPLACEME</text></svg>'
+  };
+  
+  function drawem(){
+	clearme();
+	l = document.getElementById('lands').value;
+	c = document.getElementById('cards').value;
+	u = document.getElementById('until').value;
+  	o = document.getElementById('output');
+	p = o.innerHTML;
+	type = "";
+	total = 0;
+	count = 0;
+	temp = "";
+	until = 0;
+	notDone = true;
+	
+	face = cardFace['card'];
+
+    for (i = 0; i < 13; i++){
+	type = "";
+	r = Math.ceil(Math.random() * c);
+	if (r <= l) {
+		l--;
+		type = "L";
+		total++;
+		count++;
+		if ((count >= u) && (notDone)) {
+			notDone = !notDone;
+			until = i + 1;
+		}
+	}
+	c--;
+        temp += "<span>" + face.replace('REPLACEME', type) + " </span>";
+    }
+    temp += "<hr>Total:" + total + " " + u + " Lands at: " + until + "<hr>";
+    p = temp + p;
+	
+    type = "";
+	total = 0;
+	count = 0;
+	temp = "";
+	until = 0;
+	notDone = true;
+	
+	face = cardFace['card'];
+
+    for (i = 0; i < 14; i++){
+	type = "";
+	r = Math.ceil(Math.random() * c);
+	if (r <= l) {
+		l--;
+		type = "L";
+		total++;
+		count++;
+		if ((count >= u) && (notDone)) {
+			notDone = !notDone;
+			until = i + 1;
+		}
+	}
+	c--;
+        temp += "<span>" + face.replace('REPLACEME', type) + " </span>";
+    }
+    temp += "<hr>Total:" + total + " " + u + " Lands at: " + until + "<hr>";
+    p = temp + p;
+
+    o.innerHTML = p;
+  }
+
+  function clearme(){
+  	o = document.getElementById('output');
+  	o.innerHTML = "";
+  }
+
+  function loady(){
+  	  for(f in cardFace){
+  		  e = document.getElementById(f);
+		  if (e) e.innerHTML = cardFace[f].replace("REPLACEME", f);
+	  }
+  }
+
+  function cardClick(whatzis){
+    n = document.getElementById('lands');
+		n.value = whatzis.id;
+  }
+</script>
+</head>
+
+<body onload=loady()>
+<div class='outer'>
+  <div id="control">
+  <input type="number" step="1" id="lands" value='24' maxlength="3" size="1" width="1em"> Lands 
+  <input type="number" step="1" id="cards" value='60' maxlength="3" size="1"> Cards
+  <input type="number" step="1" id="until" value='5' maxlength="3" size="1"> Cards Until Land
+  <button id="draw" onclick="drawem()">Draw</button>
+  </div>
+
+  
+<span id="26" onclick="cardClick(this)">
+</span>
+<span id="24" onclick="cardClick(this)">
+</span>
+
+  <div id="output"></div>
+  </div>
+</body></html>
